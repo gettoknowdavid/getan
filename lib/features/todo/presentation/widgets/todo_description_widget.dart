@@ -11,7 +11,7 @@ class TodoDescriptionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return todo.isComplete
+    return todo.isComplete || todo.description.isEmpty
         ? Container()
         : Text(
             todo.description,
