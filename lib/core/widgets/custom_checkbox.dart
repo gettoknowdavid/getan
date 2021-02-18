@@ -48,7 +48,7 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
         decoration: BoxDecoration(
           color: _isSelected
               ? widget.selectedColor ?? theme.primaryColor
-              : Colors.grey[300],
+              : theme.colorScheme.background,
           borderRadius: BorderRadius.circular(radius),
         ),
         width: widget.size ?? containerSize,
@@ -57,7 +57,7 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
             ? Icon(
                 Icons.check,
                 color: widget.selectedIconColor ?? theme.scaffoldBackgroundColor,
-                size: widget.iconSize ?? 20,
+                size: widget.iconSize ?? 18,
               )
             : null,
       ),

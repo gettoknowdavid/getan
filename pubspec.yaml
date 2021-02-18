@@ -84,26 +84,14 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: CMGSans
+    - family: ProductSans
       fonts:
-        - asset: assets/fonts/CMGSans-Thin.ttf
-          weight: 100
-        - asset: assets/fonts/CMGSans-ExtraLight.ttf
-          weight: 200
-        - asset: assets/fonts/CMGSans-Light.ttf
-          weight: 300
-        - asset: assets/fonts/CMGSans-Regular.ttf
-          weight: 400
-        - asset: assets/fonts/CMGSans-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/CMGSans-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/CMGSans-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/CMGSans-ExtraBold.ttf
-          weight: 800
-        - asset: assets/fonts/CMGSans-Black.ttf
-          weight: 900
+        - asset: assets/fonts/ProductSans-Black.ttf
+        - asset: assets/fonts/ProductSans-Bold.ttf
+        - asset: assets/fonts/ProductSans-Light.ttf
+        - asset: assets/fonts/ProductSans-Thin.ttf
+        - asset: assets/fonts/ProductSans-Regular.ttf
+        - asset: assets/fonts/ProductSans-Medium.ttf 
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

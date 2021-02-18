@@ -42,7 +42,7 @@ class TodoLocalDataSourceImpl implements TodoLocalDataSource {
 
   @override
   Future<List<TodoModel>> sortByCategory(TodoCategory category) async {
-    final _category = categoryToString(category);
+    final _category = enumToString(category);
     switch (category) {
       case TodoCategory.none:
         final finder = Finder(sortOrders: [SortOrder(Field.key, false, true)]);

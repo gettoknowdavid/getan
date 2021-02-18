@@ -174,7 +174,7 @@ class _SubtitleItems extends StatelessWidget {
         ),
         SizedBox(height: 6),
         Text(
-          categoryCase(todo.category),
+          enumCase(todo.category),
           style: TextStyle(color: categoryColor(todo.category)),
         ),
         SizedBox(height: 8),

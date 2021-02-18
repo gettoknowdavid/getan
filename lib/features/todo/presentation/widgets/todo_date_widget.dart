@@ -12,11 +12,17 @@ class TodoDateWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Text(
-      formatDate(context, todo.created),
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      style: theme.textTheme.bodyText1.copyWith(color: Colors.grey),
+    return Padding(
+      padding: const EdgeInsets.only(top: 4.0),
+      child: Text(
+        formatDate(context, todo.created),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: theme.textTheme.bodyText1.copyWith(
+          color: Colors.grey,
+          fontSize: 15,
+        ),
+      ),
     );
   }
 }

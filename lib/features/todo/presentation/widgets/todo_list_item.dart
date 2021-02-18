@@ -76,22 +76,20 @@ class _ListTileContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
 
     // ignore: close_sinks
     final bloc = context.read<TodoBloc>();
+    final _todo = todo.copyWith(
+      isComplete: !todo.isComplete,
+      type: TodoListType.completed,
+    );
 
     return Container(
       margin: EdgeInsets.symmetric(vertical: 16),
       child: Material(
-        color: isSelected
-            ? Colors.grey[500]
-            : todo.isComplete
-                ? Colors.transparent
-                : Colors.white,
+        color: todo.isComplete ? Color(0xFFF8F9FB) : Colors.white,
         borderRadius: BorderRadius.circular(16),
         elevation: todo.isComplete ? 0 : 12,
-        shadowColor: theme.primaryColor.withOpacity(.15),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(8, 24, 8, 24),
           child: ListTile(
@@ -100,14 +98,7 @@ class _ListTileContainer extends StatelessWidget {
             subtitle: _SubtitleItems(todo: todo),
             trailing: CustomCheckbox(
               value: todo.isComplete,
-              onChanged: (_) {
-                bloc
-                  ..add(UpdateTodo(
-                      todo: todo.copyWith(
-                    isComplete: !todo.isComplete,
-                    type: TodoListType.completed,
-                  )));
-              },
+              onChanged: (_) => bloc..add(UpdateTodo(todo: _todo)),
             ),
           ),
         ),
@@ -129,12 +120,11 @@ class _SubtitleItems extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        SizedBox(height: 8),
         TodoDateWidget(todo: todo),
-        SizedBox(height: 16),
-        TodoDescriptionWidget(todo: todo),
+        todo.description.isEmpty
+            ? Container()
+            : TodoDescriptionWidget(todo: todo),
       ],
     );
   }
 }
-

@@ -9,21 +9,28 @@ class TodoTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
     final mainStyle = theme.textTheme.headline6;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(
-          todo.title,
-          style: mainStyle.copyWith(
-            color: todo.isComplete ? Colors.grey[500] : mainStyle.color,
-            decoration: todo.isComplete
-                ? TextDecoration.lineThrough
-                : TextDecoration.none,
+        LimitedBox(
+          maxWidth: width * 0.6,
+          child: Text(
+            todo.title,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: mainStyle.copyWith(
+              fontSize: 22,
+              color: todo.isComplete ? Colors.grey[500] : mainStyle.color,
+              decoration: todo.isComplete
+                  ? TextDecoration.lineThrough
+                  : TextDecoration.none,
+            ),
           ),
         ),
-        SizedBox(width: 6),
+        SizedBox(width: 12),
         TodoPriorityWidget(todo: todo),
       ],
     );

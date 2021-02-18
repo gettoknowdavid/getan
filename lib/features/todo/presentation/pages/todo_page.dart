@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/utils/string_helpers.dart';
+import '../../../../core/utils/popup_category_list.dart';
 import '../../domain/entities/todo.dart';
 import '../../domain/entities/todo_category.dart';
 import '../bloc/todo_bloc.dart';
@@ -17,27 +17,13 @@ class TodoPage extends StatelessWidget {
     // ignore: close_sinks
     final bloc = BlocProvider.of<TodoBloc>(context);
 
-    List<PopupMenuEntry<TodoCategory>> _items() {
-      List<PopupMenuEntry<TodoCategory>> _items = [];
-
-      for (TodoCategory category in TodoCategory.values) {
-        _items.add(
-          PopupMenuItem(
-            child: Text(categoryCase(category)),
-            value: category,
-          ),
-        );
-      }
-      return _items.toList();
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Getan'),
         actions: [
           PopupMenuButton<TodoCategory>(
             icon: Icon(Icons.keyboard_arrow_down),
-            itemBuilder: (context) => _items(),
+            itemBuilder: (context) => items(),
             onSelected: (value) {
               bloc..add(SortByCategory(category: value));
             },

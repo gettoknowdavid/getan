@@ -11,7 +11,9 @@ class TodoDescriptionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return todo.isComplete || todo.description.isEmpty
+    return Container(
+      margin: EdgeInsets.only(top: 16),
+      child: todo.isComplete
         ? Container()
         : Text(
             todo.description,
@@ -21,6 +23,7 @@ class TodoDescriptionWidget extends StatelessWidget {
               fontSize: 17,
               color: Colors.grey[600],
             ),
-          );
+          ),
+    );
   }
 }
