@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as dotEnv;
 
@@ -9,6 +10,7 @@ import 'features/todo/presentation/bloc/todo_bloc.dart';
 Future<void> main() async {
   await dotEnv.load();
   await initializeDependencies();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   runApp(
     MultiBlocProvider(

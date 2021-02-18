@@ -16,7 +16,6 @@ class CustomButton extends StatelessWidget {
         title,
         style: theme.textTheme.headline6.copyWith(
           color: Colors.white,
-          fontSize: 23.0,
           fontWeight: FontWeight.bold,
         ),
       ),

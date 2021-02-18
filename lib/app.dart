@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:getan/theme.dart';
+import 'theme.dart';
 
 import 'features/todo/presentation/bloc/todo_bloc.dart';
 import 'features/todo/presentation/pages/add_todo_page.dart';
@@ -20,7 +20,7 @@ class App extends StatelessWidget {
         '/': (context) => TodoPage(),
         '/addTodo': (context) {
           return AddTodoPage(onSave: (todo) => bloc..add(AddTodo(todo: todo)));
-        }
+        },
       },
     );
   }

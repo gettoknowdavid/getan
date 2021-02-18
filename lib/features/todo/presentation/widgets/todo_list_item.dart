@@ -1,82 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:getan/features/todo/presentation/pages/add_todo_page.dart';
 
 import '../../../../core/widgets/custom_checkbox.dart';
-import '../../../../core/widgets/snack_bar_message.dart';
 import '../../domain/entities/todo.dart';
 import '../../domain/entities/todo_list_type.dart';
 import '../bloc/todo_bloc.dart';
-import '../pages/add_todo_page.dart';
+import '../pages/details_page.dart';
 import 'todo_date_widget.dart';
 import 'todo_description_widget.dart';
 import 'todo_title_widget.dart';
 
-class TodoListItem extends StatefulWidget {
-  const TodoListItem({
-    Key key,
-    @required this.todo,
-    @required this.selectedList,
-  }) : super(key: key);
+class TodoListItem extends StatelessWidget {
+  const TodoListItem({Key key, @required this.todo}) : super(key: key);
   final Todo todo;
-  final List<Todo> selectedList;
-
-  @override
-  _TodoListItemState createState() => _TodoListItemState();
-}
-
-class _TodoListItemState extends State<TodoListItem> {
-  List<Todo> get _selectedList => widget.selectedList;
 
   @override
   Widget build(BuildContext context) {
-    bool isSelected = _selectedList.isNotEmpty;
-
     return GestureDetector(
-      onTap: () => _updateTodo(context),
-      child: _ListTileContainer(
-        todo: widget.todo,
-        isSelected: isSelected,
-        onRemoveTodo: () => _removeTodo(context),
-      ),
+      onTap: () => _goToDetailsPage(context),
+      child: _ListTileContainer(todo: todo),
     );
   }
 
-  void _removeTodo(BuildContext context) {
-    // ignore: close_sinks
-    final bloc = context.read<TodoBloc>();
-    bloc..add(RemoveTodo(todo: widget.todo));
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: SnackBarMessage('Successfully removed: ${widget.todo.title}'),
-    ));
-  }
-
-  void _updateTodo(BuildContext context) {
-    // ignore: close_sinks
-    final bloc = context.read<TodoBloc>();
+  void _goToDetailsPage(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => AddTodoPage(
-        todo: widget.todo,
-        isEditing: true,
-        onSave: (_todo) => bloc..add(UpdateTodo(todo: _todo)),
-      ),
+      builder: (context) => AddTodoPage(todo: todo, isEditing: true),
     ));
   }
 }
 
 class _ListTileContainer extends StatelessWidget {
-  const _ListTileContainer({
-    Key key,
-    @required this.todo,
-    @required this.isSelected,
-    @required this.onRemoveTodo,
-  }) : super(key: key);
+  const _ListTileContainer({Key key, @required this.todo}) : super(key: key);
   final Todo todo;
-  final bool isSelected;
-  final Function onRemoveTodo;
 
   @override
   Widget build(BuildContext context) {
-
     // ignore: close_sinks
     final bloc = context.read<TodoBloc>();
     final _todo = todo.copyWith(
@@ -108,10 +67,7 @@ class _ListTileContainer extends StatelessWidget {
 }
 
 class _SubtitleItems extends StatelessWidget {
-  const _SubtitleItems({
-    Key key,
-    @required this.todo,
-  }) : super(key: key);
+  const _SubtitleItems({Key key, @required this.todo}) : super(key: key);
 
   final Todo todo;
 

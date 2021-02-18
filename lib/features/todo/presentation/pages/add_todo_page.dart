@@ -13,13 +13,16 @@ import '../../domain/entities/todo_priority.dart';
 
 typedef OnSaveCallback = Function(Todo _todo);
 
+String _title;
+String _description;
+TodoCategory _category;
+TodoPriority _priority;
+bool _isComplete;
+String _created = DateTime.now().toIso8601String();
+
 class AddTodoPage extends StatefulWidget {
-  const AddTodoPage({
-    Key key,
-    this.isEditing = false,
-    this.onSave,
-    this.todo,
-  }) : super(key: key);
+  const AddTodoPage({Key key, this.isEditing = false, this.onSave, this.todo})
+      : super(key: key);
   final bool isEditing;
   final OnSaveCallback onSave;
   final Todo todo;
@@ -34,21 +37,12 @@ class _AddTodoPageState extends State<AddTodoPage> {
   bool get isEditing => widget.isEditing;
   Todo get todo => widget.todo;
 
-  String _title;
-  String _description;
-  TodoCategory _category;
-  TodoPriority _priority;
-  bool _isComplete;
-  String _created = DateTime.now().toIso8601String();
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final height = MediaQuery.of(context).size.height;
-    print(height * 0.06);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Add Task')),
+      appBar: AppBar(title: Text(isEditing ? 'Details' : '')),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(26),
         child: Form(
@@ -56,16 +50,18 @@ class _AddTodoPageState extends State<AddTodoPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              _PageTitle(isEditing: isEditing),
               CustomTextField(
                 autofocus: true,
                 hintText: 'Title',
                 initialValue: isEditing ? todo.title : '',
                 onSaved: (value) => _title = value,
+                fillColor: Colors.transparent,
                 validator: (val) {
                   return val.trim().isEmpty ? 'Title must not be empty' : null;
                 },
               ),
-              SizedBox(height: 70),
+              SizedBox(height: 40),
               CustomTextField(
                 hintText: 'Description',
                 maxLines: 6,
@@ -86,7 +82,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
                 items: priorities(),
                 onChanged: (value) => setState(() => _priority = value),
               ),
-              SizedBox(height: 60),
+              SizedBox(height: 40),
               Row(
                 children: [
                   SizedBox(width: 16),
@@ -99,7 +95,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
                   Spacer(),
                 ],
               ),
-              SizedBox(height: 100),
+              SizedBox(height: 80),
               CustomButton(
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
@@ -116,12 +112,32 @@ class _AddTodoPageState extends State<AddTodoPage> {
                     Navigator.pop(context);
                   }
                 },
-                title: isEditing ? 'Done' : 'Add todo',
+                title: isEditing ? 'Done' : 'Add',
               ),
             ],
           ),
         ),
       ),
     );
+  }
+}
+
+class _PageTitle extends StatelessWidget {
+  const _PageTitle({Key key, @required this.isEditing}) : super(key: key);
+  final bool isEditing;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final style = theme.textTheme.headline4.copyWith(
+      fontWeight: FontWeight.bold,
+    );
+
+    return isEditing
+        ? Container()
+        : Container(
+            child: Text('Add new todo', style: style),
+            margin: EdgeInsets.symmetric(vertical: 30),
+          );
   }
 }

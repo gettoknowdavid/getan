@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/utils/popup_category_list.dart';
-import '../../domain/entities/todo.dart';
 import '../../domain/entities/todo_category.dart';
 import '../bloc/todo_bloc.dart';
 import '../widgets/todo_list.dart';
-
-List<Todo> selectedList = <Todo>[];
 
 class TodoPage extends StatelessWidget {
   @override
@@ -30,7 +27,7 @@ class TodoPage extends StatelessWidget {
           ),
         ],
       ),
-      body: TodoList(selectedList: selectedList),
+      body: TodoList(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Container(
         height: height * 0.1,
