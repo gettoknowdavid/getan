@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:getan/core/usecase/usecase.dart';
 import 'package:getan/core/widgets/custom_bottom_sheet.dart';
+import 'package:getan/features/todo/presentation/widgets/todo_category_widget.dart';
 import 'package:getan/features/todo/presentation/widgets/todo_date_widget.dart';
 
 import '../../../../core/widgets/custom_checkbox.dart';
@@ -101,11 +102,11 @@ class _TodoListItemState extends State<TodoListItem> {
               ),
               TodoDescriptionWidget(todo: widget.todo),
               TodoDateWidget(todo: widget.todo),
-                  // SizedBox(height: 10),
-              
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  TodoCategoryWidget(todo: widget.todo),
+                  Spacer(),
                   IconButton(
                     icon: Icon(Icons.delete_outline),
                     color: Colors.red,
@@ -118,10 +119,9 @@ class _TodoListItemState extends State<TodoListItem> {
                     icon: Icon(Icons.archive_outlined),
                     color: Colors.red,
                     onPressed: () {
-                      bloc.add(RemoveTodo(todo: widget.todo));
+                      bloc..add(RemoveTodo(todo: widget.todo));
                     },
                   ),
-                  SizedBox(width: 0),
                 ],
               ),
             ],
