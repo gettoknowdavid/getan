@@ -84,14 +84,25 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: ProductSans
+    - family: Poppins
       fonts:
-        - asset: assets/fonts/ProductSans-Black.ttf
-        - asset: assets/fonts/ProductSans-Bold.ttf
-        - asset: assets/fonts/ProductSans-Light.ttf
-        - asset: assets/fonts/ProductSans-Thin.ttf
-        - asset: assets/fonts/ProductSans-Regular.ttf
-        - asset: assets/fonts/ProductSans-Medium.ttf 
-  #
+        - asset: assets/fonts/Poppins-Thin.otf
+          weight: 100
+        - asset: assets/fonts/Poppins-ExtraLight.otf
+          weight: 200
+        - asset: assets/fonts/Poppins-Light.otf
+          weight: 300
+        - asset: assets/fonts/Poppins-Regular.otf
+          weight: 400
+        - asset: assets/fonts/Poppins-Medium.otf
+          weight: 500
+        - asset: assets/fonts/Poppins-SemiBold.otf
+          weight: 600
+        - asset: assets/fonts/Poppins-Bold.otf
+          weight: 700
+        - asset: assets/fonts/Poppins-ExtraBold.otf
+          weight: 800
+        - asset: assets/fonts/Poppins-Black.otf
+          weight: 900
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

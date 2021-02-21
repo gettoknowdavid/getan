@@ -43,7 +43,7 @@ class _PriorityItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final conSize = MediaQuery.of(context).size.shortestSide * 0.022;
+    final conSize = MediaQuery.of(context).size.shortestSide * 0.018;
     final radius = conSize * 0.35;
 
     return Container(

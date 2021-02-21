@@ -20,15 +20,16 @@ class CustomDropdownField extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: Color(0xFFF1F2F9),
+        color: theme.colorScheme.background,
         borderRadius: BorderRadius.circular(16),
       ),
       child: DropdownButtonFormField(
+        dropdownColor: Colors.white,
         elevation: 24,
         isDense: false,
         style: theme.textTheme.headline6,
         icon: Icon(Icons.keyboard_arrow_down, size: 28),
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           border: InputBorder.none,
           contentPadding: EdgeInsets.fromLTRB(16, 14, 16, 14),
         ),

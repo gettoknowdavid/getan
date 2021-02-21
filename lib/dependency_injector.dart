@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:getan/core/bottom_nav/bloc/bottom_nav_bloc.dart';
 
 import 'core/database/getan_db.dart';
 import 'features/todo/data/datasources/todo_local_data_source.dart';
@@ -30,6 +31,7 @@ Future<void> initializeDependencies() async {
       updateTodo: sl(),
     ),
   );
+  sl.registerFactory<BottomNavBloc>(() => BottomNavBloc());
 
   // Repositories
   sl.registerLazySingleton<TodoRepository>(

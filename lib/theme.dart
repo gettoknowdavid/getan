@@ -35,6 +35,7 @@ class AppTheme {
           borderRadius: BorderRadius.circular(16),
         ),
       ),
+      canvasColor: Colors.transparent,
       iconTheme: _iconTheme(base.iconTheme),
       primaryIconTheme: _iconTheme(base.primaryIconTheme),
       textTheme: _textTheme(base.textTheme),
@@ -45,7 +46,7 @@ class AppTheme {
 
 TextTheme _textTheme(TextTheme base) {
   return base.copyWith().apply(
-        fontFamily: 'ProductSans',
+        fontFamily: 'Poppins',
         displayColor: Color(0xFF282240),
         bodyColor: Color(0xFF282240),
       );

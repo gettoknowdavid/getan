@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'theme.dart';
 
+import 'core/screen_controller/screen_controller.dart';
 import 'features/todo/presentation/bloc/todo_bloc.dart';
-import 'features/todo/presentation/pages/add_todo_page.dart';
-import 'features/todo/presentation/pages/todo_page.dart';
+import 'features/todo/presentation/widgets/add_todo_widget.dart';
+import 'theme.dart';
 
 class App extends StatelessWidget {
   @override
@@ -17,9 +17,10 @@ class App extends StatelessWidget {
       theme: AppTheme.theme,
       debugShowCheckedModeBanner: false,
       routes: {
-        '/': (context) => TodoPage(),
+        '/': (context) => ScreenController(),
+        // '/': (context) => TodoPage(),
         '/addTodo': (context) {
-          return AddTodoPage(onSave: (todo) => bloc..add(AddTodo(todo: todo)));
+          return AddTodoWidget(onSave: (todo) => bloc..add(AddTodo(todo: todo)));
         },
       },
     );

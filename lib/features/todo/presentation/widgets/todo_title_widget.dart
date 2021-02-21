@@ -18,11 +18,10 @@ class TodoTitleWidget extends StatelessWidget {
         LimitedBox(
           maxWidth: width * 0.6,
           child: Text(
-            todo.title,
-            maxLines: 2,
+            todo.title.trim(),
+            maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: mainStyle.copyWith(
-              fontSize: 22,
               color: todo.isComplete ? Colors.grey[500] : mainStyle.color,
               decoration: todo.isComplete
                   ? TextDecoration.lineThrough
@@ -36,3 +35,6 @@ class TodoTitleWidget extends StatelessWidget {
     );
   }
 }
+
+
+

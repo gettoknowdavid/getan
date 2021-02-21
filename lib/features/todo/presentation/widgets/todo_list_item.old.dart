@@ -1,194 +1,94 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:getan/core/widgets/custom_bottom_sheet.dart';
 
-import '../../../../core/utils/format_date.dart';
-import '../../../../core/utils/string_helpers.dart';
-import '../../../../core/utils/todo_category_to_color.dart';
 import '../../../../core/widgets/custom_checkbox.dart';
-import '../../../../core/widgets/snack_bar_message.dart';
 import '../../domain/entities/todo.dart';
 import '../../domain/entities/todo_list_type.dart';
 import '../bloc/todo_bloc.dart';
-import '../pages/add_todo_page.dart';
+import 'add_todo_widget.dart';
+import 'todo_description_widget.dart';
 import 'todo_title_widget.dart';
 
 class TodoListItem extends StatefulWidget {
-  const TodoListItem({
-    Key key,
-    @required this.todo,
-    @required this.selectedList,
-  }) : super(key: key);
+  const TodoListItem({Key key, @required this.todo}) : super(key: key);
   final Todo todo;
-  final List<Todo> selectedList;
 
   @override
   _TodoListItemState createState() => _TodoListItemState();
 }
 
 class _TodoListItemState extends State<TodoListItem> {
-  List<Todo> get _selectedList => widget.selectedList;
+  bool get isComplete => widget.todo.isComplete;
+
+  bool _isComplete;
+
+  @override
+  void initState() {
+    super.initState();
+    _isComplete = isComplete;
+  }
 
   @override
   Widget build(BuildContext context) {
-    bool isSelected = _selectedList.isNotEmpty;
+    // ignore: close_sinks
+    final bloc = context.read<TodoBloc>();
+    final height = MediaQuery.of(context).size.height;
+
+    final _todo = widget.todo.copyWith(
+      isComplete: !isComplete,
+      type: TodoListType.completed,
+    );
 
     return GestureDetector(
-      // onLongPress: () {
-      //   setState(() => isSelected = !isSelected);
-      //   widget.selectedList.add(widget.todo);
-      // },
-      onTap: () {
-        if (widget.selectedList.isNotEmpty) {
-          setState(() => isSelected = !isSelected);
-          widget.selectedList.add(widget.todo);
-        } else {
-          setState(() => isSelected = !isSelected);
-          _updateTodo(context);
-        }
-      },
-      child: Stack(
-        children: [
-          _ListTileContainer(
-            todo: widget.todo,
-            isSelected: isSelected,
-            onRemoveTodo: () => _removeTodo(context),
-          ),
-          isSelected
-              ? Positioned(
-                  top: 3,
-                  right: 0,
-                  child: Material(
-                    color: Colors.white,
-                    type: MaterialType.circle,
-                    child: Icon(Icons.check_circle, color: Colors.red),
-                  ),
-                )
-              : Container(),
-        ],
-      ),
-    );
-  }
-
-  void _removeTodo(BuildContext context) {
-    // ignore: close_sinks
-    final bloc = context.read<TodoBloc>();
-    bloc..add(RemoveTodo(todo: widget.todo));
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: SnackBarMessage('Successfully removed: ${widget.todo.title}'),
-    ));
-  }
-
-  void _updateTodo(BuildContext context) {
-    // ignore: close_sinks
-    final bloc = context.read<TodoBloc>();
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => AddTodoPage(
-        todo: widget.todo,
-        isEditing: true,
-        onSave: (_todo) => bloc..add(UpdateTodo(todo: _todo)),
-      ),
-    ));
-  }
-}
-
-class _ListTileContainer extends StatelessWidget {
-  const _ListTileContainer({
-    Key key,
-    @required this.todo,
-    @required this.isSelected,
-    @required this.onRemoveTodo,
-  }) : super(key: key);
-  final Todo todo;
-  final bool isSelected;
-  final Function onRemoveTodo;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    // ignore: close_sinks
-    final bloc = context.read<TodoBloc>();
-
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 12),
-      child: Material(
-        color: isSelected
-            ? Colors.grey[500]
-            : todo.isComplete
-                ? Colors.transparent
-                : Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        elevation: todo.isComplete ? 0 : 12,
-        shadowColor: theme.primaryColor.withOpacity(.15),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
-          child: ListTile(
-            key: Key('Todo_item__${todo.id}'),
-            title: TodoTitleWidget(todo: todo),
-            subtitle: _SubtitleItems(todo: todo),
-            trailing: IconButton(
-              icon: Icon(Icons.delete_outlined),
-              onPressed: onRemoveTodo,
-              color: Colors.red,
-            ),
-            leading: CustomCheckbox(
-              value: todo.isComplete,
-              onChanged: (_) {
-                bloc
-                  ..add(UpdateTodo(
-                      todo: todo.copyWith(
-                    isComplete: !todo.isComplete,
-                    type: TodoListType.completed,
-                  )));
-              },
+      onTap: () => _goToDetailsPage(context),
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 16),
+        child: Material(
+          color: _isComplete ? Color(0xFFEBEBEB) : Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          elevation: _isComplete ? 0 : 12,
+          child: AnimatedContainer(
+            curve: Curves.easeInOut,
+            height: _isComplete ? height * 0.055 : height * 0.13,
+            alignment: Alignment.topCenter,
+            duration: Duration(seconds: 2),
+            padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+            child: ListTile(
+              key: Key('Todo_item__${widget.todo.id}'),
+              title: TodoTitleWidget(todo: widget.todo),
+              subtitle: widget.todo.description.isEmpty
+                  ? null
+                  : TodoDescriptionWidget(todo: widget.todo),
+              trailing: CustomCheckbox(
+                value: isComplete,
+                onChanged: (_) {
+                  setState(() {
+                    _isComplete = !_isComplete;
+                  });
+                  bloc..add(UpdateTodo(todo: _todo));
+                },
+              ),
             ),
           ),
         ),
       ),
     );
   }
-}
 
-class _SubtitleItems extends StatelessWidget {
-  const _SubtitleItems({
-    Key key,
-    @required this.todo,
-  }) : super(key: key);
-
-  final Todo todo;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          formatDate(context, todo.created),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            decoration: todo.isComplete
-                ? TextDecoration.lineThrough
-                : TextDecoration.none,
-          ),
+  void _goToDetailsPage(BuildContext context) {
+    // ignore: close_sinks
+    final bloc = context.read<TodoBloc>();
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => CustomBottomSheet(
+        child: AddTodoWidget(
+          isEditing: true,
+          todo: widget.todo,
+          onSave: (_todo) => bloc..add(UpdateTodo(todo: _todo)),
         ),
-        SizedBox(height: 6),
-        Text(
-          enumCase(todo.category),
-          style: TextStyle(color: categoryColor(todo.category)),
-        ),
-        SizedBox(height: 8),
-        Text(
-          todo.description,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            decoration: todo.isComplete
-                ? TextDecoration.lineThrough
-                : TextDecoration.none,
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
