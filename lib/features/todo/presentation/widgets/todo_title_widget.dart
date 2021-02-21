@@ -16,7 +16,7 @@ class TodoTitleWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         LimitedBox(
-          maxWidth: width * 0.6,
+          maxWidth: width * 0.5,
           child: Text(
             todo.title.trim(),
             maxLines: 1,
@@ -29,12 +29,9 @@ class TodoTitleWidget extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(width: 12),
+        SizedBox(width: 6),
         TodoPriorityWidget(todo: todo),
       ],
     );
   }
 }
-
-
-

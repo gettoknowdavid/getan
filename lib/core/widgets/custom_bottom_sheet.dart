@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 class CustomBottomSheet extends StatelessWidget {
-  const CustomBottomSheet({Key key, this.child, this.showTopBar = true})
+  const CustomBottomSheet(
+      {Key key, this.title, this.child, this.showTopBar = true})
       : super(key: key);
+  final String title;
   final Widget child;
   final bool showTopBar;
 
@@ -22,7 +24,7 @@ class CustomBottomSheet extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             _TopBar(),
-            Text('Create todo', style: theme.textTheme.headline6),
+            Text(title ?? 'Create todo', style: theme.textTheme.headline6),
             Expanded(child: child ?? Container()),
           ],
         ),

@@ -46,6 +46,6 @@ class ScreenController extends StatelessWidget {
   }
 
   Widget _buildAppBar(BuildContext context, String title) {
-    return AppBar(title: Text(title));
+    return AppBar(title: Text(title.toUpperCase()));
   }
 }

@@ -37,6 +37,7 @@ class _TodoListItemState extends State<TodoListItem> {
       context: context,
       isScrollControlled: true,
       builder: (context) => CustomBottomSheet(
+        title: 'Edit todo',
         child: AddTodoWidget(
           isEditing: true,
           todo: widget.todo,
@@ -64,10 +65,10 @@ class _TodoListItemState extends State<TodoListItem> {
       onTap: () => _goToDetailsPage(context),
       child: AnimatedContainer(
         margin: EdgeInsets.symmetric(vertical: 16),
-        height: _isOpen ? height * 0.16 : height * 0.07,
+        height: _isOpen ? height * 0.165 : height * 0.07,
         alignment: Alignment.topCenter,
         duration: Duration(milliseconds: 350),
-        padding: EdgeInsets.fromLTRB(26, 12, 20, 12),
+        padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
         decoration: BoxDecoration(
           color: _isComplete ? Color(0xFFEBEBEB) : Colors.white,
           borderRadius: BorderRadius.circular(16),
@@ -112,6 +113,7 @@ class _BottomTile extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
+        SizedBox(width: 16.0),
         TodoCategoryWidget(todo: todo),
         Spacer(),
         IconButton(
@@ -129,6 +131,7 @@ class _BottomTile extends StatelessWidget {
             context.read<TodoBloc>()..add(RemoveTodo(todo: todo));
           },
         ),
+        SizedBox(width: 16.0),
       ],
     );
   }
@@ -147,16 +150,14 @@ class _TopTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        CustomCheckbox(value: todo.isComplete, onChanged: onChanged),
-        SizedBox(width: 26),
-        Expanded(child: TodoTitleWidget(todo: todo)),
-        IconButton(
-          icon: Icon(Icons.keyboard_arrow_down),
-          onPressed: onMorePressed,
-        ),
-      ],
+    return ListTile(
+      leading: CustomCheckbox(value: todo.isComplete, onChanged: onChanged),
+      title: TodoTitleWidget(todo: todo),
+      trailing: IconButton(
+        icon: Icon(Icons.keyboard_arrow_down),
+        onPressed: onMorePressed,
+      ),
+      horizontalTitleGap: 8,
     );
   }
 }

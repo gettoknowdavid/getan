@@ -18,7 +18,11 @@ class TodoDateWidget extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: EdgeInsets.only(top: topPadding),
+      padding: EdgeInsets.only(
+        top: topPadding,
+        left: 16.0,
+        right: 16.0,
+      ),
       child: Text(
         formatDate(context, todo.created),
         maxLines: 1,

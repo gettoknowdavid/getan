@@ -9,13 +9,16 @@ class TodoDescriptionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Text(
-      todo.description.trim(),
-      maxLines: 1,
-      softWrap: true,
-      overflow: TextOverflow.ellipsis,
-      style: theme.textTheme.subtitle1.copyWith(
-        color: Colors.grey[600],
+    return Padding(
+      padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+      child: Text(
+        todo.description.trim(),
+        maxLines: 1,
+        softWrap: true,
+        overflow: TextOverflow.ellipsis,
+        style: theme.textTheme.subtitle1.copyWith(
+          color: Colors.grey[600],
+        ),
       ),
     );
   }
