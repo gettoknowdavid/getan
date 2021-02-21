@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:getan/core/usecase/usecase.dart';
 import 'package:getan/core/widgets/custom_bottom_sheet.dart';
+import 'package:getan/features/todo/presentation/widgets/todo_date_widget.dart';
 
 import '../../../../core/widgets/custom_checkbox.dart';
 import '../../domain/entities/todo.dart';
@@ -21,72 +23,108 @@ class TodoListItem extends StatefulWidget {
 class _TodoListItemState extends State<TodoListItem> {
   bool get isComplete => widget.todo.isComplete;
 
-  bool _isComplete;
+  GlobalKey<TodoDescriptionWidgetState> _key =
+      GlobalKey<TodoDescriptionWidgetState>();
 
+  bool _isComplete;
+  bool _isOpen;
   @override
   void initState() {
     super.initState();
     _isComplete = isComplete;
+    _isOpen = false;
   }
 
   @override
   Widget build(BuildContext context) {
     // ignore: close_sinks
     final bloc = context.read<TodoBloc>();
+    // final theme = Theme.of(context);
+
     final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
 
     final _todo = widget.todo.copyWith(
       isComplete: !isComplete,
       type: TodoListType.completed,
     );
+    final _title = TodoTitleWidget(
+      todo: widget.todo,
+      key: _key,
+    );
 
     return GestureDetector(
       onTap: () => _goToDetailsPage(context),
-      child: Container(
+      child: AnimatedContainer(
         margin: EdgeInsets.symmetric(vertical: 16),
-        child: Material(
+        height: _isOpen ? height * 0.16 : height * 0.07,
+        alignment: Alignment.topCenter,
+        duration: Duration(milliseconds: 350),
+        padding: EdgeInsets.fromLTRB(26, 12, 20, 12),
+        decoration: BoxDecoration(
           color: _isComplete ? Color(0xFFEBEBEB) : Colors.white,
           borderRadius: BorderRadius.circular(16),
-          elevation: _isComplete ? 0 : 12,
-          child: AnimatedContainer(
-            curve: Curves.easeInOut,
-            height: _isComplete ? height * 0.055 : height * 0.13,
-            alignment: Alignment.topCenter,
-            duration: Duration(seconds: 2),
-            padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
-            child: SingleChildScrollView(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          boxShadow: [
+            BoxShadow(
+              color: _isComplete ? Colors.transparent : Colors.black12,
+              offset: Offset(0, 10.0),
+              blurRadius: 20,
+              spreadRadius: 0,
+            ),
+          ],
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
                 children: [
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 6),
-                        TodoTitleWidget(todo: widget.todo),
-                        SizedBox(height: 6),
-                        widget.todo.description.isEmpty
-                            ? null
-                            : TodoDescriptionWidget(todo: widget.todo),
-                      ],
-                    ),
+                  CustomCheckbox(
+                    value: isComplete,
+                    onChanged: (_) {
+                      setState(() {
+                        _isComplete = !_isComplete;
+                      });
+                      bloc..add(UpdateTodo(todo: _todo));
+                    },
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CustomCheckbox(
-                      value: isComplete,
-                      onChanged: (_) {
-                        setState(() {
-                          _isComplete = !_isComplete;
-                        });
-                        bloc..add(UpdateTodo(todo: _todo));
-                      },
-                    ),
+                  SizedBox(width: 26),
+                  Expanded(child: _title),
+                  IconButton(
+                    icon: Icon(Icons.keyboard_arrow_down),
+                    onPressed: () {
+                      setState(() => _isOpen = !_isOpen);
+                      print(_title.key);
+                    },
                   ),
                 ],
               ),
-            ),
+              TodoDescriptionWidget(todo: widget.todo),
+              TodoDateWidget(todo: widget.todo),
+                  // SizedBox(height: 10),
+              
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.delete_outline),
+                    color: Colors.red,
+                    onPressed: () {
+                      bloc.add(RemoveTodo(todo: widget.todo));
+                    },
+                  ),
+                  SizedBox(width: 30),
+                  IconButton(
+                    icon: Icon(Icons.archive_outlined),
+                    color: Colors.red,
+                    onPressed: () {
+                      bloc.add(RemoveTodo(todo: widget.todo));
+                    },
+                  ),
+                  SizedBox(width: 0),
+                ],
+              ),
+            ],
           ),
         ),
       ),
